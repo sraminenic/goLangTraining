@@ -1,20 +1,33 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
 	"strings"
 )
 
-func wordCount(wordStr string) map[string]int {
-	wordMap := make(map[string]int)
-	words := strings.Fields(wordStr)
-	for _, v := range words {
-		wordMap[v]++
-	}
-	return wordMap
-}
+var x = `DOO WOP DOO WOP DOO WOP
+SHOOBY DOOBY DOO
+WOO WOO`
 
 func main() {
-	fmt.Println(wordCount("Hello Welcome to word count app"))
-	fmt.Println(wordCount("count the repeated word by word count"))
+	fmt.Println(wordCount(x))
+}
+
+func wordCount(wordStr string) map[string][]int {
+	scanner := bufio.NewScanner(strings.NewReader(wordStr))
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+	wordMap := make(map[string][]int)
+	lineNo := 1
+	for scanner.Scan() {
+		words := strings.Fields(scanner.Text())
+		for _, v := range words {
+			wordMap[v] = append(wordMap[v], lineNo)
+		}
+		lineNo++
+	}
+	return wordMap
 }
