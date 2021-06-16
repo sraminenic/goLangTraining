@@ -1,12 +1,12 @@
 package database
 
 import (
-	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"github.com/magiconair/properties"
 	"os"
 	"path/filepath"
+	"log"
 )
 
 
@@ -32,7 +32,7 @@ func connectDB() (*gorm.DB) {
 	db, err := gorm.Open(mysql.Open(dbHostURL), &gorm.Config{})
 
 	if err != nil {
-		fmt.Println("Error connecting to database : error=%v", err)
+		log.Fatal("Error connecting to database : error=", err)
 		return nil
 	}
 
@@ -45,7 +45,7 @@ func readDBPropertyFile() *properties.Properties {
 	var PropertyFile= []string{filepath.Join(path, "db.properties")}
 	var prop, err = properties.LoadFiles(PropertyFile, properties.UTF8, true)
 	if err != nil {
-		fmt.Println("Error in reading property file error=%v", err)
+		log.Fatal("Error in reading property file error=", err)
 		return nil
 	}
 	return prop
